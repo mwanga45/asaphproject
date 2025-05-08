@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, ChangeEvent, FormEvent } from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 import './login.css'
 
 interface LoginForm {
@@ -55,9 +55,9 @@ const Login: React.FC = () => {
         </button>
         <p className="signup-text">
           Don’t have an account?{' '}
-          <Link href="/register">
+          {/* <Link href="../registration">
             <a className="signup-link">Register</a>
-          </Link>
+          </Link> */}
         </p>
       </form>
     </div>

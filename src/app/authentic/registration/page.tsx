@@ -1,8 +1,7 @@
-// app/register/page.tsx
-'use client'
 
+'use client'
 import { useState, ChangeEvent, FormEvent } from 'react'
-import Link from 'next/link'
+
 import './register.css'
 
 interface RegisterForm {
@@ -121,9 +120,9 @@ const Register: React.FC = () => {
 
         <p className="signup-text">
           Already have an account?{' '}
-          <Link href="/login">
+          {/* <Link href="/login">
             <a className="signup-link">Login</a>
-          </Link>
+          </Link> */}
         </p>
       </form>
     </div>
