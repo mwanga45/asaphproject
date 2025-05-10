@@ -10,17 +10,18 @@ export default function Usercard(role) {
             <p>User Details</p>
         </div>
         <div className='usrdetails'>
-            <div>
+            <div className='usrImgcontainer'>
                 <img src="../favicon.ico" alt=""  />
             </div>
-            <div>
+            <div className='usrnamecontainer'>
                 <p>Name</p>
+                <p>Asaph Franklin</p>
             </div>
-            <div>
+            <div className='usrphonecontainer'>
                 <p>Phone</p>
                 <p>0744010257</p>
             </div>
-            <div>
+            <div className='usremailcontainer'>
                 <p>Email</p>
                 <p>AsaphFranklin@gmail.com</p>
             </div>
