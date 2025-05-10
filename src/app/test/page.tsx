@@ -3,7 +3,7 @@ import Usercard from "../componets/usercard"
 
 function Test() {
   return (
-    <div>
+    <div style={{ overflowX:"hidden"}}>
       <Usercard/>
     </div>
   );

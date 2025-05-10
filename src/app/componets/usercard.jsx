@@ -6,7 +6,7 @@ export default function Usercard(role) {
   return (
     <div className='usrmain-container'>
       <div className='usrRole'>
-        <div >
+        <div className='rolename' >
             <p>User Details</p>
         </div>
         <div className='usrdetails'>
