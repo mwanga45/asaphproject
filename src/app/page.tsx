@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import "./landing.css"
+import 
 
 export default function Landingpage() {
+  useEffect(()=>{
+    setInterval(()=>({
+      
+    }))
+  },[])
   return (
-    <div>
-      <h1>Welcome to our page </h1>
+    <div className='main-container'>
+      <h1>Welcome to our Name of Site </h1>
     </div>
   )
 }
