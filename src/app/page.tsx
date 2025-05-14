@@ -15,7 +15,9 @@ export default function Landingpage() {
 
   return (
     <div className="main-container">
+      
       <h1>Welcome to our Name of Site</h1>
+      <h2>For Better and Quality Service</h2>
     </div>
   );
 }
