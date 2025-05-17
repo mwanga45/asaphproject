@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useEffect } from "react";
+import React , {useEffect}from "react";
 import "./landing.css";
+import { FaStarOfLife } from "react-icons/fa6";
 
 export default function Landingpage() {
 
@@ -15,9 +16,9 @@ export default function Landingpage() {
 
   return (
     <div className="main-container">
-      
+       <FaStarOfLife color="green" size={80}/>
       <h1>Welcome to our Name of Site</h1>
-      <h2>For Better and Quality Service</h2>
+      <p>For Better and Quality Service</p>
     </div>
   );
 }
