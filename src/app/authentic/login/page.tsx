@@ -3,6 +3,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import axios from 'axios'
 import { apiURL } from '@/app/utils/Urlport'
 import Link from 'next/link';
+import { toast, ToastContainer } from 'react-toastify'
 import './login.css'
 
 
@@ -13,17 +14,16 @@ interface LoginForm {
 }
 
 const Login: React.FC = () => {
-
-  
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
-  const handleLogin =async(e: FormEvent<HTMLFormElement>)=>{
+  const handleSubmit =async(e: FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     try{
 
       const res = await axios.post(apiURL+'api/service/login',form,{validateStatus:()=> true})
       switch(res.status){
         case 200:
-          alert(res.data.message||"SuccessFully Login")
+          // alert(res.data.message||"SuccessFully Login")
+          toast.success(res.data.message)
           window.location.href ='/home'
         case 400:
           alert(res.data.message || 'Unexpect Error or Network Error')
@@ -44,14 +44,15 @@ const Login: React.FC = () => {
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('Login:', form)
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault()
+  //   console.log('Login:', form)
   
-  }
+  // }
 
   return (
     <div className="container">
+      <ToastContainer/>
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="title">Login</h2>
         <label className="field">
@@ -76,7 +77,7 @@ const Login: React.FC = () => {
             required
           />
         </label>
-        <button type="submit" className="btn" onClick={handleLogin}>
+        <button type="submit" className="btn" >
           Sign In
         </button>
         <p className="signup-text">
