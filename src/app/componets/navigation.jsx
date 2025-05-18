@@ -43,7 +43,7 @@ export default function Navbar() {
     <>
       <nav className="navbar">
         <div className="nav-container">
-          <div className="nav-brand" style={{marginLeft:"5px",color:"rgb(130, 190,130, 0.8)", fontWeight:"700"}}>Medic Booking Service</div>
+          <div className="nav-brand" >ADVANCED CARE MD AND TELEHEALTH SYSTEM</div>
 
           <div className="desktop-menu">
             {navLinks.map((link) => (

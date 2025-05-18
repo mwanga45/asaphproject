@@ -150,6 +150,10 @@
       text-decoration: none;
     }
     
+    .nav-brand{
+      font-size: 12px;
+      color: #4b5563;
+    }
     .mobile-menu-overlay {
       display: none;
     }
