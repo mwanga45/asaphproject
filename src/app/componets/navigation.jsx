@@ -4,6 +4,7 @@ import { MdSms } from "react-icons/md";
 import { GiBlackBook } from "react-icons/gi";
 import { RiChatHistoryFill } from "react-icons/ri";
 import { TbHelpSquareFilled } from "react-icons/tb";
+import { FaSignOutAlt } from "react-icons/fa";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -39,6 +40,7 @@ export default function Navbar() {
     { name: "Chart", href: "/health", icon: <MdSms className="icon" /> },
     { name: "Record", href: "/profile", icon: <RiChatHistoryFill className="icon" /> },
     { name: "Help", href: "/help", icon: <TbHelpSquareFilled className="icon" /> },
+    { name: "SignOut", href: "/authentic/login", icon: < FaSignOutAlt className="icon" /> },
   ];
 
   return (
