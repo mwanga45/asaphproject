@@ -6,28 +6,34 @@ import Link from 'next/link';
 import './login.css'
 
 
+
 interface LoginForm {
   email: string
   password: string
 }
 
 const Login: React.FC = () => {
+  
   const handleLogin =async()=>{
     try{
 
-      const res = await axios.post(apiURL+'api/service/login',form)
-      if (res.data.status === 400 || res.data.status === 500){
-       return alert(res.data.message)
+      const res = await axios.post(apiURL+'api/service/login',form,{validateStatus:()=> true})
+      switch(res.status){
+        case 200:
+          alert(res.data.message||"SuccessFully Login")
+          window.location.href = '/home'
+        case 400:
+          alert(res.data.message || 'Unexpect Error or Network Error')
+        case 500:
+          alert(res.data.message|| 'Something went wrong or Network Error') 
+        break
+        default:
+          alert('Unexpected Status'+ res.status) 
       }
-      return alert(res.data.message)
     }catch(err){
       console.error("Something went wrong ", err)
       return alert('Network Error')
     }
-     
-
-     
-
   }
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
 
