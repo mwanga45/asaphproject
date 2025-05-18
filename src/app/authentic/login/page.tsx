@@ -4,7 +4,7 @@ import axios from 'axios'
 import { apiURL } from '@/app/utils/Urlport'
 import Link from 'next/link';
 import './login.css'
-
+// import { useRouter } from 'next/navigation' 
 
 
 interface LoginForm {
@@ -13,7 +13,9 @@ interface LoginForm {
 }
 
 const Login: React.FC = () => {
+  // const router = useRouter()
   
+  const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
   const handleLogin =async()=>{
     try{
 
@@ -21,7 +23,7 @@ const Login: React.FC = () => {
       switch(res.status){
         case 200:
           alert(res.data.message||"SuccessFully Login")
-          window.location.href = '/home'
+          window.location.href ='/home'
         case 400:
           alert(res.data.message || 'Unexpect Error or Network Error')
         case 500:
@@ -35,7 +37,6 @@ const Login: React.FC = () => {
       return alert('Network Error')
     }
   }
-  const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
