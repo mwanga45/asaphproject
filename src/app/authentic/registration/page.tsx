@@ -1,6 +1,7 @@
 
 'use client'
 import { useState, ChangeEvent, FormEvent } from 'react'
+import Link from 'next/link'
 
 import './register.css'
 
@@ -120,9 +121,9 @@ const Register: React.FC = () => {
 
         <p className="signup-text">
           Already have an account?{' '}
-          {/* <Link href="/login">
-            <a className="signup-link">Login</a>
-          </Link> */}
+          <Link href="/authentic/login">
+            Go to Login
+          </Link>
         </p>
       </form>
     </div>

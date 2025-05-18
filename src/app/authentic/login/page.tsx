@@ -1,9 +1,10 @@
-
 'use client'
-
 import { useState, ChangeEvent, FormEvent } from 'react'
-// import Link from 'next/link'
+import axios from 'axios'
+import { apiURL } from '@/app/utils/Urlport'
+import Link from 'next/link';
 import './login.css'
+
 
 interface LoginForm {
   email: string
@@ -11,6 +12,23 @@ interface LoginForm {
 }
 
 const Login: React.FC = () => {
+  const handleLogin =async()=>{
+    try{
+
+      const res = await axios.post(apiURL+'api/service/login',form)
+      if (res.data.status === 400 || res.data.status === 500){
+       return alert(res.data.message)
+      }
+      return alert(res.data.message)
+    }catch(err){
+      console.error("Something went wrong ", err)
+      return alert('Network Error')
+    }
+     
+
+     
+
+  }
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +68,12 @@ const Login: React.FC = () => {
             required
           />
         </label>
-        <button type="submit" className="btn">
+        <button type="submit" className="btn" onClick={handleLogin}>
           Sign In
         </button>
         <p className="signup-text">
-          Don’t have an account?{' '}
-          {/* <Link href="../registration">
-            <a className="signup-link">Register</a>
-          </Link> */}
+          Don’t have an account?
+          <Link href='/authentic/registration'>Go to Register</Link>
         </p>
       </form>
     </div>
