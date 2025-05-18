@@ -3,6 +3,7 @@ import { FiHome, FiCoffee, FiTrendingUp, FiHeart, FiUser, FiMenu, FiX } from "re
 import { MdSms } from "react-icons/md";
 import { GiBlackBook } from "react-icons/gi";
 import { RiChatHistoryFill } from "react-icons/ri";
+import { TbHelpSquareFilled } from "react-icons/tb";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -37,6 +38,7 @@ export default function Navbar() {
     { name: "Booking", href: "/progress", icon: < GiBlackBook className="icon" /> },
     { name: "Chart", href: "/health", icon: <MdSms className="icon" /> },
     { name: "Record", href: "/profile", icon: <RiChatHistoryFill className="icon" /> },
+    { name: "Help", href: "/help", icon: <TbHelpSquareFilled className="icon" /> },
   ];
 
   return (
