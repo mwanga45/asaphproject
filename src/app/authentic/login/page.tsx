@@ -4,7 +4,7 @@ import axios from 'axios'
 import { apiURL } from '@/app/utils/Urlport'
 import Link from 'next/link';
 import './login.css'
-// import { useRouter } from 'next/navigation' 
+
 
 
 interface LoginForm {
@@ -13,10 +13,11 @@ interface LoginForm {
 }
 
 const Login: React.FC = () => {
-  // const router = useRouter()
+
   
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
-  const handleLogin =async()=>{
+  const handleLogin =async(e: FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
     try{
 
       const res = await axios.post(apiURL+'api/service/login',form,{validateStatus:()=> true})

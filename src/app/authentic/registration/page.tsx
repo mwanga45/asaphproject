@@ -2,6 +2,8 @@
 'use client'
 import { useState, ChangeEvent, FormEvent } from 'react'
 import Link from 'next/link'
+import axios from 'axios'
+import { apiURL } from '@/app/utils/Urlport'
 
 import './register.css'
 
@@ -29,13 +31,32 @@ const Register: React.FC = () => {
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (form.password !== form.confirmPassword) {
       alert('Passwords do not match')
       return
     }
-    console.log('Register:', form)
+    try{
+      const res = await axios.post(apiURL+"api/service/register", form, {validateStatus:()=> true})
+      switch(res.status){
+        case 201 :
+          alert(res.data.message || "Successfuly Create new Account")
+          window.location.href= "/authentic/login"
+        case 400:
+          alert(res.data.message)
+        case 500:
+          alert(res.data.message)
+        break
+        default:
+          alert(res.status)
+      }
+
+    }catch(err){
+      console.error("Something went wrong here", err)
+      return alert("Unexpected Error or Network Error")
+
+    }
     
   }
 
