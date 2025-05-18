@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { FiHome, FiCoffee, FiTrendingUp, FiHeart, FiUser, FiMenu, FiX } from "react-icons/fi";
+import { MdSms } from "react-icons/md";
+import { GiBlackBook } from "react-icons/gi";
+import { RiChatHistoryFill } from "react-icons/ri";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -30,17 +33,17 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/home", icon: <FiHome className="icon" /> },
-    { name: "Food Service", href: "/food-service", icon: <FiCoffee className="icon" /> },
-    { name: "Progress", href: "/progress", icon: <FiTrendingUp className="icon" /> },
-    { name: "Health", href: "/health", icon: <FiHeart className="icon" /> },
-    { name: "Profile", href: "/profile", icon: <FiUser className="icon" /> },
+    { name: "Profile", href: "/food-service", icon: <FiUser className="icon" /> },
+    { name: "Booking", href: "/progress", icon: < GiBlackBook className="icon" /> },
+    { name: "Chart", href: "/health", icon: <MdSms className="icon" /> },
+    { name: "Record", href: "/profile", icon: <RiChatHistoryFill className="icon" /> },
   ];
 
   return (
     <>
       <nav className="navbar">
         <div className="nav-container">
-          <div className="nav-brand" style={{marginLeft:"5px",color:"blue", fontWeight:"700"}}>Smart Diet</div>
+          <div className="nav-brand" style={{marginLeft:"5px",color:"rgb(130, 190,130, 0.8)", fontWeight:"700"}}>Medic Booking Service</div>
 
           <div className="desktop-menu">
             {navLinks.map((link) => (
