@@ -106,7 +106,7 @@ const SlideShow = ({ slides }) => {
           background-color: rgba(0,0,0,0.8);
         }
 
-        /* Dots navigation */
+    
         .dots-container {
           position: absolute;
           bottom: 20px;
@@ -133,15 +133,4 @@ const SlideShow = ({ slides }) => {
     </div>
   );
 };
-
-// Example usage:
-// const App = () => {
-//   const slides = [
-//     'image1.jpg',
-//     'image2.jpg',
-//     'image3.jpg'
-//   ];
-//   return <SlideShow slides={slides} />;
-// };
-
 export default SlideShow;
