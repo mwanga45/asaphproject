@@ -10,11 +10,9 @@ import "./home.css";
 
 function Home() {
   const  slides = [
-  'https://images.unsplash.com/photo-1588776814314-d2c099baf4f3',
-  'https://images.unsplash.com/photo-1604014237339-01b5f4a57a44',
-  'https://images.unsplash.com/photo-1588776814457-1d1e6e8e1f43',
-  'https://images.unsplash.com/photo-1600959907703-e6041e6b8f3c',
-  'https://images.unsplash.com/photo-1580281657527-47d7d99c37ce'
+  '../utils/image/istockphoto-1456035845-612x612.webp',
+  '../utils/image/istockphoto-1935710691-612x612.webp',
+  '../utils/image/istockphoto-2154829989-612x612.webp'
   
   ]
   return (
