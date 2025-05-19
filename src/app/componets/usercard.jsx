@@ -1,7 +1,5 @@
 import React from 'react'
 import "./usercard.css"
-
-
 export default function Usercard(role) {
 
   return (
