@@ -38,6 +38,10 @@
 .footer p{
     color: aliceblue;
 }
+.footer div svg{
+    color:aliceblue;
+    size: 34px;
+}
 .footer div{
     display: flex;
     flex-direction: column;
