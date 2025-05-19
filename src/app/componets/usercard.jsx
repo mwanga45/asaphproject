@@ -1,13 +1,14 @@
 import React from 'react'
 import "./usercard.css"
 
+
 export default function Usercard(role) {
 
   return (
     <div className='usrmain-container'>
       <div className='usrRole'>
         <div className='rolename' >
-            <p>User Details</p>
+            <p>Your Details</p>
         </div>
         <div className='usrdetails'>
             <div className='usrImgcontainer'>
