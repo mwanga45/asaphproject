@@ -26,8 +26,9 @@
     height:90%;
     width: 90%;
     display: flex;
-    border: 2px solid blue;
-    
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
 @media (max-width: 768px) {
   .profile-container {
