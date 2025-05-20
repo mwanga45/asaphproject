@@ -1,9 +1,10 @@
 import React from "react";
+import './btn.css'
 
-export default function Btn() {
+export default function Btn({name}) {
   return (
     <div>
-      <button>button</button>
+      <button>{name}</button>
     </div>
   );
 }
