@@ -41,7 +41,9 @@
     height:6vh;
     width: 300px;
     padding-left: 12px;
+    padding-right: 12px;
     outline: none;
+    border-radius: 20px;
 }
 .bk-btn{
     height: 5vh;
@@ -53,7 +55,12 @@
     font-size: larger;
     font-weight: 700;
 }
-
+.bookingsheetcointainer{
+    width: 100%;
+    height: 90vh;
+    background-color:rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+}
 @media (max-width: 480px) {
   .bk-title {
     font-size: larger;

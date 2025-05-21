@@ -32,7 +32,9 @@ function Booking() {
          <div className="resultsheet">
 
          </div>
-         <div className="bookingsheetcointainer"></div>
+         <div className="bookingsheetcointainer">
+            
+         </div>
       </div>
     </div>
   )
