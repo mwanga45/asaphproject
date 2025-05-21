@@ -13,16 +13,16 @@ export default function Usercard(role) {
                 <img src="../favicon.ico" alt=""  />
             </div>
             <div className='usrnamecontainer'>
-                <p>Name</p>
-                <p>Asaph Franklin</p>
+                <p style={{color:"grey", fontWeight:"bolder"}}>Name</p>
+                <p style={{color:"grey", fontWeight:"800" , fontFamily:"sans-serif"}}>Asaph Franklin</p>
             </div>
             <div className='usrphonecontainer'>
-                <p>Phone</p>
-                <p>0744010257</p>
+                <p style={{color:"grey", fontWeight:"bolder"}}>Phone</p>
+                <p style={{color:"grey", fontWeight:"800"}}>0744010257</p>
             </div>
             <div className='usremailcontainer'>
-                <p>Email</p>
-                <p>AsaphFranklin@gmail.com</p>
+                <p style={{color:"grey", fontWeight:"bolder"}}>Email</p>
+                <p style={{color:"grey", fontWeight:"800"}}>AsaphFranklin@gmail.com</p>
             </div>
         </div>
       </div>

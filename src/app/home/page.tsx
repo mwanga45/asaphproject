@@ -6,15 +6,16 @@ import { FaPhone } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import Slideshow from "../componets/slide"
+import img1 from '../utils/image/istockphoto-1456035845-612x612.webp';
+import img2 from '../utils/image/istockphoto-1935710691-612x612.webp';
+import img3 from '../utils/image/istockphoto-2154829989-612x612.webp';
 import "./home.css";
 
 function Home() {
-  const  slides = [
-  '../utils/image/istockphoto-1456035845-612x612.webp',
-  '../utils/image/istockphoto-1935710691-612x612.webp',
-  '../utils/image/istockphoto-2154829989-612x612.webp'
-  
-  ]
+const slides = [
+  img1,img2,img3
+];
+
   return (
 
     <div className="hm-container">
@@ -36,7 +37,7 @@ function Home() {
           <p style={{ fontSize: 20 }}>
             Contact
           </p>
-          <p>0744010257</p>
+          <p style={{color:'blue'}}>0744010257</p>
         </div>
         <div>
               <FaInstagramSquare />
