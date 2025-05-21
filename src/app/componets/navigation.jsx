@@ -35,8 +35,8 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/home", icon: <FiHome className="icon" /> },
-    { name: "Profile", href: "/food-service", icon: <FiUser className="icon" /> },
-    { name: "Booking", href: "/progress", icon: < GiBlackBook className="icon" /> },
+    { name: "Profile", href: "/profile", icon: <FiUser className="icon" /> },
+    { name: "Booking", href: "/booking", icon: < GiBlackBook className="icon" /> },
     { name: "Chart", href: "/health", icon: <MdSms className="icon" /> },
     { name: "Record", href: "/profile", icon: <RiChatHistoryFill className="icon" /> },
     { name: "Help", href: "/help", icon: <TbHelpSquareFilled className="icon" /> },
