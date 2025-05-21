@@ -11,9 +11,9 @@ function Booking() {
     { id: 4, servicename: "Skin Clinic" },
   ];
   return (
-    <div className="main-container">
+    <div className="mainbk-container">
       <Navbar />
-      <div className="nav-container">
+      <div className="bk-container">
         <div className="bk-title">
           <p className="title-content"> Welcome to Our Booking </p>
         </div>

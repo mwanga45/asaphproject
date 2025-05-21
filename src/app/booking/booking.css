@@ -1,14 +1,15 @@
-.main-container{
-  width: 100%;
+.mainbk-container{
+    width: 100%;
+    background-color: rgb(0, 63, 9);
+    height: fit-content;
 }
-.nav-container {
+.bk-container {
+  
   width: 100%;
-  height: fit-content;
   padding: 12px;
   display: flex;
   flex-direction: column;
   row-gap: 12px;
-  background-color: rgb(0, 63, 9);
 }
 .bk-title {
   width: 100%;
