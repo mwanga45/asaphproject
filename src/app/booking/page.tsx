@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
 // import Navbar from '../componets/navigation'
-import Link from 'next/link'
+// import Link from 'next/link'
+import './booking.css'
 function Booking() {
   const Dropdown = [
     {id: 1 , servicename: 'General Check'},
@@ -15,7 +16,7 @@ function Booking() {
       <div className='nav-container'>
          {/* <Navbar/> */}
          <div className="bk-title">
-          <p> Welcome to Our Booking <Link href='./help'>Check for Some Guidance</Link></p> 
+          <p className='title-content'> Welcome to Our Booking </p> 
          </div>
          <div className="ServiceListContainer">
               <form >
@@ -25,9 +26,13 @@ function Booking() {
                     <option value="id" key={service.id}>{service.servicename}</option>
                 ))}
                 </select>
-                <button>Get Slot!</button>
+                <button className='bk-btn'>Get Slot!</button>
               </form>
          </div>
+         <div className="resultsheet">
+
+         </div>
+         <div className="bookingsheetcointainer"></div>
       </div>
     </div>
   )
