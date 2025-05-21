@@ -20,7 +20,7 @@ function Booking() {
          </div>
          <div className="ServiceListContainer">
               <form >
-                <select name="" id="">
+                <select name="" id="" className='service-ls'>
                 <option value="">--Select Service--</option>
                 {Dropdown.map((service)=>(
                     <option value="id" key={service.id}>{service.servicename}</option>
