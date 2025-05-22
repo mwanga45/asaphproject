@@ -1,37 +1,46 @@
 "use client";
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import Navbar from "../componets/navigation";
 import { apiURL } from "../utils/Urlport";
 import { ToastContainer,toast } from "react-toastify";
-// import Link from 'next/link'
 import "./booking.css";
 import axios from "axios";
-function Booking() {
+type service = {
+  id: number,
+  servicename:string,
+  duration_minutes:string
+  fee:string
+}
+const  Booking:React.FC =()=> {
+  const [services, setservices]= useState<service[]>([])
   const handleService = async()=>{
     try{
-      const res =  await axios.get(apiURL+"/api/service/serviceAvailable")
+      const res =  await axios.get(apiURL+"api/service/profile/seviceAvailable")
       switch(res.status){
         case 200:
           toast.success(res.data.message)
-       
+          const serv :service[] =res.data.rows
+          setservices(serv)
+          console.log(services)
+          break
+        case 400:
+          toast.error("Something went wrong or Token is been Expire")
+          break
+        case 500:
+          toast.error("Internal Server Error ")
+          break
+          default:
+            toast.error("Unexpected Status"+ res.status)
       }
-
     }catch(err){
       console.error("Something went wrong", err)
       return  alert("Internal Server Error")
     }
-    
-
   }
-  const Dropdown = [
-    { id: 1, servicename: "General Check" },
-    { id: 2, servicename: "Malaria" },
-    { id: 3, servicename: "Eye Clinic" },
-    { id: 4, servicename: "Skin Clinic" },
-  ];
-  useEffect(()=>{
-    handleService()
-  })
+  useEffect(() => {
+    handleService();
+  },[]);
+
   return (
     <div className="mainbk-container">
       <Navbar />
@@ -42,10 +51,10 @@ function Booking() {
         </div>
         <div className="ServiceListContainer">
           <form>
-            <select name="" id="" className="service-ls">
+            <select name="service" id="service" className="service-ls">
               <option value="">--Select Service--</option>
-              {Dropdown.map((service) => (
-                <option value="id" key={service.id}>
+                   {services.map((service) => (
+                <option value={service.id} key={service.id}>
                   {service.servicename}
                 </option>
               ))}
