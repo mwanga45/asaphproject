@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { apiURL } from '@/app/utils/Urlport'
+import { ToastContainer,toast } from 'react-toastify'
 
 import './register.css'
 
@@ -41,7 +42,8 @@ const Register: React.FC = () => {
       const res = await axios.post(apiURL+"api/service/register", form, {validateStatus:()=> true})
       switch(res.status){
         case 201 :
-          alert(res.data.message || "Successfuly Create new Account")
+          // alert(res.data.message || "Successfuly Create new Account")
+          toast.success(res.data.message)
           window.location.href= "/authentic/login"
         case 400:
           alert(res.data.message)
@@ -62,6 +64,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="container">
+    <ToastContainer/>
       <form className="form" onSubmit={handleSubmit}>
         <h2 className="title">Register</h2>
 
