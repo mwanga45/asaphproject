@@ -27,8 +27,13 @@ const Register: React.FC = () => {
     address: ''
   })
  const validatePhone= (phone:string)=>{
-  const regex2 = /^(?:0|\+255)7\d{8}$/;
-  return regex2.test(phone)
+  const regphone2 = /^(?:0|\+255)7\d{8}$/;
+  return regphone2.test(phone)
+ }
+ const validateEmail = (email:string)=>{
+    const regemail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@"]+\.)+[^<>()[\]\\.,;:\s@"]{2,})$/i;
+    return regemail.test(String(email).toLowerCase());
  }
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -38,18 +43,20 @@ const Register: React.FC = () => {
   const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (form.password !== form.confirmPassword) {
-      alert('Passwords do not match')
+      toast.error('Passwords do not match')
       return
-    }
-    if (!validatePhone){
+    };
+    if (!validatePhone(form.phone)){
       toast.error("Invalid Phone Number")
+    };
+    if (!validateEmail(form.email)){
+      toast.error("Invalid Email")
     }
-
+     
     try{
       const res = await axios.post(apiURL+"api/service/register", form, {validateStatus:()=> true})
       switch(res.status){
         case 201 :
-          // alert(res.data.message || "Successfuly Create new Account")
           toast.success(res.data.message)
           window.location.href= "/authentic/login"
           break
@@ -59,13 +66,10 @@ const Register: React.FC = () => {
         case 500:
           toast.error(res.data.message)
           break
-    
         default:
           toast.error(res.status)
           break
-
       }
-
     }catch(err){
       console.error("Something went wrong here", err)
       return alert("Unexpected Error or Network Error")
