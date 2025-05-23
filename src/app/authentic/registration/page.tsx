@@ -26,7 +26,10 @@ const Register: React.FC = () => {
     phone: '',
     address: ''
   })
-
+ const validatePhone= (phone:string)=>{
+  const regex2 = /^(?:0|\+255)7\d{8}$/;
+  return regex2.test(phone)
+ }
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
@@ -38,6 +41,10 @@ const Register: React.FC = () => {
       alert('Passwords do not match')
       return
     }
+    if (!validatePhone){
+      toast.error("Invalid Phone Number")
+    }
+
     try{
       const res = await axios.post(apiURL+"api/service/register", form, {validateStatus:()=> true})
       switch(res.status){
@@ -45,13 +52,18 @@ const Register: React.FC = () => {
           // alert(res.data.message || "Successfuly Create new Account")
           toast.success(res.data.message)
           window.location.href= "/authentic/login"
+          break
         case 400:
-          alert(res.data.message)
+          toast.error(res.data.message)
+          break
         case 500:
-          alert(res.data.message)
-        break
+          toast.error(res.data.message)
+          break
+    
         default:
-          alert(res.status)
+          toast.error(res.status)
+          break
+
       }
 
     }catch(err){

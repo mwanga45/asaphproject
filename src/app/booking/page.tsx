@@ -13,6 +13,9 @@ type service = {
 }
 const  Booking:React.FC =()=> {
   const [services, setservices]= useState<service[]>([])
+  // const handleGetslot = async()=>{
+
+  // }
   const handleService = async()=>{
     try{
       const res =  await axios.get(apiURL+"api/service/profile/seviceAvailable")
@@ -21,7 +24,6 @@ const  Booking:React.FC =()=> {
           toast.success(res.data.message)
           const serv :service[] =res.data.rows
           setservices(serv)
-          console.log(services)
           break
         case 400:
           toast.error("Something went wrong or Token is been Expire")
