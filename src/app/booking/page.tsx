@@ -69,6 +69,7 @@ const Booking: React.FC = () => {
         </div>
         <div className="resultsheet"></div>
         <div className="bookingsheetcointainer"></div>
+        
       </div>
     </div>
   );
