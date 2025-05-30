@@ -82,6 +82,7 @@ const Booking: React.FC = () => {
         toast.success("Here soon you will see it!")
         const result:rowSlotty[] = respond.data.available
         setrowSlot(result)
+        return
 
       }
       else if (respond.status === 400) {
@@ -119,8 +120,14 @@ const Booking: React.FC = () => {
             <button className="bk-btn">Get Slot!</button>
           </form>
         </div>
-        <div className="resultsheet"></div>
-        <div className="bookingsheetcointainer"></div>
+        <div className="resultsheet">
+           
+        </div>
+        <div className="bookingsheetcointainer">
+          <div className="listSlot-container">
+            
+          </div>
+        </div>
 
       </div>
     </div>

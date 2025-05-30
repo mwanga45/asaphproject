@@ -64,6 +64,10 @@
     background-color:rgba(0, 0, 0, 0.3);
     border-radius: 20px;
 }
+.listSlot-container{
+  display: flex;
+  padding: 6px;
+}
 @media (max-width: 480px) {
   .bk-title {
     font-size: larger;
