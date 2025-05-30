@@ -44,11 +44,6 @@ const Login: React.FC = () => {
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   console.log('Login:', form)
-  
-  // }
 
   return (
     <div className="container">

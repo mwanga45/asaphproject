@@ -5,7 +5,6 @@ import { apiURL } from "../utils/Urlport";
 import { ToastContainer, toast } from "react-toastify";
 import "./booking.css";
 import axios from "axios";
-import { strict } from "assert";
 
 type service = {
   id: number;
@@ -55,7 +54,13 @@ const Booking: React.FC = () => {
   const handlegetslot= async(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     try{
-      const res  =  await axios.post(apiURL+"api/service/booking/getslot", )
+       
+      const respond  =  await axios.post(apiURL+"api/service/booking/getslot",selectedSv)
+
+      if (respond.status === 400){
+        return toast.error(respond.data.message)
+      }
+
     }catch(err){
       console.error("Something went wrong", err)
       toast.error("Internal Server Error")
