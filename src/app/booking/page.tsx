@@ -15,13 +15,20 @@ type service = {
 type selectSv = {
   servicename:string,
   duration_minutes: string
-}  
+};
+type  rowSlot =  {
+  doctor_id:Number,
+  doctorname:string,
+  start_time: string,
+  end_time:string,
+  date: string,
+  day_name: string
+
+}
 const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
-  const [selectedSv, setselectSv] = useState({
-    servicename:"",
-    duration_minutes:""
-  })
+  const [selectedSv, setselectSv] = useState<selectSv|null>(null)
+  const [rowSlot , setrowlost]  =  useState<rowSlot[]>([])
   const handleService = async () => {
     try {
       const res = await axios.get(
@@ -51,15 +58,39 @@ const Booking: React.FC = () => {
       return alert("Internal Server Error");
     }
   };
+  const handleSelectserv = (e:React.ChangeEvent<HTMLSelectElement>) =>{
+    const id =  Number(e.target.value)
+    const svc =  services.find((s)=> s.id === id)
+    if (svc){
+      setselectSv({
+        servicename:svc.servicename,
+        duration_minutes:svc.duration_minutes
+      })
+      console.log(selectedSv)
+    }else{
+      setselectSv(null)
+    }
+  
+  }
   const handlegetslot= async(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
+    if (!selectedSv){
+      return toast.error("Please select target Service")
+    }
     try{
-       
       const respond  =  await axios.post(apiURL+"api/service/booking/getslot",selectedSv)
 
-      if (respond.status === 400){
-        return toast.error(respond.data.message)
+      if (respond.status === 200){
+        return toast.success("Here soon you will see it!")
+        const result = respond.data.available
       }
+      else if(respond.status === 400){
+        return toast.error(respond.data.message)
+        
+      }else{
+        return toast.error(respond.status)
+      }
+
 
     }catch(err){
       console.error("Something went wrong", err)
@@ -82,7 +113,7 @@ const Booking: React.FC = () => {
         </div>
         <div className="ServiceListContainer">
           <form onSubmit={handlegetslot}>
-            <select name="service" id="service" className="service-ls">
+            <select name="service" id="service" className="service-ls" onChange={handleSelectserv}>
               <option value="">--Select Service--</option>
               {services.map((service) => (
                 <option value={service.id} key={service.id}>
