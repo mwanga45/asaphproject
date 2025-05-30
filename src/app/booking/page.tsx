@@ -13,26 +13,26 @@ type service = {
   fee: string;
 };
 type selectSv = {
-  servicename:string,
+  servicename: string,
   duration_minutes: string
 };
-type  rowSlot =  {
-  doctor_id:Number,
-  doctorname:string,
+type rowSlotty = {
+  doctor_id: Number,
+  doctorname: string,
   start_time: string,
-  end_time:string,
+  end_time: string,
   date: string,
   day_name: string
 
 }
 const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
-  const [selectedSv, setselectSv] = useState<selectSv|null>(null)
-  const [rowSlot , setrowlost]  =  useState<rowSlot[]>([])
+  const [selectedSv, setselectSv] = useState<selectSv | null>(null)
+  const [rowSlot, setrowSlot] = useState<rowSlotty[]>([])
   const handleService = async () => {
     try {
       const res = await axios.get(
-        apiURL+"api/service/profile/seviceAvailable"
+        apiURL + "api/service/profile/seviceAvailable"
       );
       switch (res.status) {
         case 200:
@@ -58,46 +58,41 @@ const Booking: React.FC = () => {
       return alert("Internal Server Error");
     }
   };
-  const handleSelectserv = (e:React.ChangeEvent<HTMLSelectElement>) =>{
-    const id =  Number(e.target.value)
-    const svc =  services.find((s)=> s.id === id)
-    if (svc){
+  const handleSelectserv = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = Number(e.target.value)
+    const svc = services.find((s) => s.id === id)
+    if (svc) {
       setselectSv({
-        servicename:svc.servicename,
-        duration_minutes:svc.duration_minutes
+        servicename: svc.servicename,
+        duration_minutes: svc.duration_minutes
       })
       console.log(selectedSv)
-    }else{
+    } else {
       setselectSv(null)
     }
-  
   }
-  const handlegetslot= async(e:FormEvent<HTMLFormElement>)=>{
+  const handlegetslot = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!selectedSv){
+    if (!selectedSv) {
       return toast.error("Please select target Service")
     }
-    try{
-      const respond  =  await axios.post(apiURL+"api/service/booking/getslot",selectedSv)
+    try {
+      const respond = await axios.post(apiURL + "api/service/booking/getslot", selectedSv)
+      if (respond.status === 200) {
+        toast.success("Here soon you will see it!")
+        const result:rowSlotty[] = respond.data.available
+        setrowSlot(result)
 
-      if (respond.status === 200){
-        return toast.success("Here soon you will see it!")
-        const result = respond.data.available
       }
-      else if(respond.status === 400){
+      else if (respond.status === 400) {
         return toast.error(respond.data.message)
-        
-      }else{
+      } else {
         return toast.error(respond.status)
       }
-
-
-    }catch(err){
+    } catch (err) {
       console.error("Something went wrong", err)
       toast.error("Internal Server Error")
     }
-
-
   }
   useEffect(() => {
     handleService();
@@ -126,7 +121,7 @@ const Booking: React.FC = () => {
         </div>
         <div className="resultsheet"></div>
         <div className="bookingsheetcointainer"></div>
-        
+
       </div>
     </div>
   );
