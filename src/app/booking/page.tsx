@@ -1,18 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import Navbar from "../componets/navigation";
 import { apiURL } from "../utils/Urlport";
 import { ToastContainer, toast } from "react-toastify";
 import "./booking.css";
 import axios from "axios";
+import { strict } from "assert";
+
 type service = {
   id: number;
   servicename: string;
   duration_minutes: string;
   fee: string;
 };
+type selectSv = {
+  servicename:string,
+  duration_minutes: string
+}  
 const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
+  const [selectedSv, setselectSv] = useState({
+    servicename:"",
+    duration_minutes:""
+  })
   const handleService = async () => {
     try {
       const res = await axios.get(
@@ -42,6 +52,17 @@ const Booking: React.FC = () => {
       return alert("Internal Server Error");
     }
   };
+  const handlegetslot= async(e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+    try{
+      const res  =  await axios.post(apiURL+"api/service/booking/getslot", )
+    }catch(err){
+      console.error("Something went wrong", err)
+      toast.error("Internal Server Error")
+    }
+
+
+  }
   useEffect(() => {
     handleService();
   }, []);
@@ -55,7 +76,7 @@ const Booking: React.FC = () => {
           <p className="title-content"> Welcome to Our Booking </p>
         </div>
         <div className="ServiceListContainer">
-          <form>
+          <form onSubmit={handlegetslot}>
             <select name="service" id="service" className="service-ls">
               <option value="">--Select Service--</option>
               {services.map((service) => (
