@@ -133,10 +133,12 @@ const Booking: React.FC = () => {
            <div className="shedkt">
             <p className="startend">Start at:</p>
             <p className="startend">End at:</p>
-
-
+            <p className="daybooking">Wensday</p>
+            <p className="datebooking">Date</p>
            </div>
-           <div className="bookbtn"></div>
+           <div className="bookbtn-container">
+            <button className="bkbtn">Select</button>
+           </div>
 
           </div>
         </div>
