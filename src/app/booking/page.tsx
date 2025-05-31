@@ -125,7 +125,19 @@ const Booking: React.FC = () => {
         </div>
         <div className="bookingsheetcointainer">
           <div className="listSlot-container">
-         
+           <div className="imagedkt"></div>
+           <div className="dktinfo">
+            <p className="dktname">Dr name</p>
+            <p className="office stations">Floor No.</p>
+           </div>
+           <div className="shedkt">
+            <p className="startend">Start at:</p>
+            <p className="startend">End at:</p>
+
+
+           </div>
+           <div className="bookbtn"></div>
+
           </div>
         </div>
       </div>
