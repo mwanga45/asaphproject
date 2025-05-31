@@ -125,10 +125,9 @@ const Booking: React.FC = () => {
         </div>
         <div className="bookingsheetcointainer">
           <div className="listSlot-container">
-            
+         
           </div>
         </div>
-
       </div>
     </div>
   );

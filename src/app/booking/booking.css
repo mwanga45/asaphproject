@@ -63,10 +63,15 @@
     height: 90vh;
     background-color:rgba(0, 0, 0, 0.3);
     border-radius: 20px;
+    display: flex;
+    justify-content: center;
 }
 .listSlot-container{
   display: flex;
   padding: 6px;
+  background-color: aliceblue;
+  height: 100px;
+  width: 200px;
 }
 @media (max-width: 480px) {
   .bk-title {
