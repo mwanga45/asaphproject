@@ -80,7 +80,7 @@ const Booking: React.FC = () => {
       const respond = await axios.post(apiURL + "api/service/booking/getslot", selectedSv)
       if (respond.status === 200) {
         toast.success("Here soon you will see it!")
-        const result:rowSlotty[] = respond.data.available
+        const result: rowSlotty[] = respond.data.available
         setrowSlot(result)
         return
 
@@ -121,213 +121,34 @@ const Booking: React.FC = () => {
           </form>
         </div>
         <div className="resultsheet">
-           
+
         </div>
         <div className="bookingsheetcointainer">
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
+          {
+            rowSlot.map((data:any) => {
+              return (
+                <div className="listSlot-container" key={data.doctor_id}>
+                  <div className="imagedkt"></div>
+                  <div className="dktinfo">
+                    <p className="dktname">Dr {data.doctorname}</p>
+                    <p className="office stations">Floor No.</p>
+                  </div>
+                  <div className="shedkt">
+                    <p className="startend">Start at:{data.start_time}</p>
+                    <p className="startend">End at:{data.end_time}</p>
+                    <p className="daybooking">DayofWeek: {data.day_name}</p>
+                    <p className="datebooking">Date: {data.date}</p>
+                  </div>
+                  <div className="bookbtn-container">
+                    <button className="bkbtn">Select</button>
+                  </div>
 
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
+                </div>
+              )
+            })
+          }
 
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
 
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
-          <div className="listSlot-container">
-           <div className="imagedkt"></div>
-           <div className="dktinfo">
-            <p className="dktname">Dr name</p>
-            <p className="office stations">Floor No.</p>
-           </div>
-           <div className="shedkt">
-            <p className="startend">Start at:</p>
-            <p className="startend">End at:</p>
-            <p className="daybooking">Wensday</p>
-            <p className="datebooking">Date</p>
-           </div>
-           <div className="bookbtn-container">
-            <button className="bkbtn">Select</button>
-           </div>
-
-          </div>
         </div>
       </div>
     </div>
