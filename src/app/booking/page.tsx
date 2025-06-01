@@ -5,6 +5,7 @@ import { apiURL } from "../utils/Urlport";
 import { ToastContainer, toast } from "react-toastify";
 import "./booking.css";
 import axios from "axios";
+import Btn from '../componets/btn'
 
 type service = {
   id: number;
@@ -121,7 +122,7 @@ const Booking: React.FC = () => {
           </form>
         </div>
         <div className="resultsheet">
-
+         {/* <Btn/> */}
         </div>
         <div className="bookingsheetcointainer">
           {

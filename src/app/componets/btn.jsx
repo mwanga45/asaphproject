@@ -1,10 +1,10 @@
 import React from "react";
 import './btn.css'
 
-export default function Btn({name}) {
+export default function Btn({name,onclick}) {
   return (
     <div>
-      <button>{name}</button>
+      <button  onClick={onclick} className="button-componet">{name}</button>
     </div>
   );
 }
