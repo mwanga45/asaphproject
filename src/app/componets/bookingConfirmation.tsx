@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import './bookingConfirmation.css'
+import './bkcf.css'
 function BookingConfirmation() {
   return (
     <div className='confcontainaer'>

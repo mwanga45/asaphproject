@@ -1,0 +1,19 @@
+.confcontainaer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+
+.innercf-container{
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 12px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    background-color: aliceblue;
+    
+}
