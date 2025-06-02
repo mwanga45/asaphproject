@@ -9,7 +9,7 @@ interface bookingconfirmationProps {
   endT: string;
   date: string;
   dayWeek: string;
-  servname: string;
+  servname: string | null | undefined;
 }
 
 const BookingConfirmation: React.FC<bookingconfirmationProps> = ({ dkname, stT, endT, date, dayWeek, servname })=> {

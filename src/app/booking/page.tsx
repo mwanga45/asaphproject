@@ -249,7 +249,7 @@ const Booking: React.FC = () => {
       {isopen ? true &&(
 
         <div className="submit-requestbk">
-          <Bookingcofirmation dkname="" stT="" endT="" date="" dayWeek="" servname=""/>
+          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename}/>
         </div>
       ) : false
       }
