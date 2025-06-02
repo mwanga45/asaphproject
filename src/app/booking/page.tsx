@@ -28,25 +28,24 @@ type rowSlotty = {
   day_name: string;
 };
 type booking = {
-  doctor_id:number;
-  doctorname:string;
-  startTime:string;
-  endTime:string;
-  date:string;
-  dayName:string
-  serviceId:string
+  doctor_id: number;
+  doctorname: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+  dayName: string
+  serviceId: string
 }
 
 const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
-  const [selectedSv, setselectSv] = useState<selectSv | null>(null);  
+  const [selectedSv, setselectSv] = useState<selectSv | null>(null);
   const [allSlots, setAllSlots] = useState<rowSlotty[]>([]);
   const [rowSlot, setrowSlot] = useState<rowSlotty[]>([]);
-  const [selected, setselected] = useState<booking[]>([])
   const [searchValue, setsearchValue] = useState<{ search: string }>({
     search: "",
   });
-  const [bookingRequest , setbookingRequest] = useState<booking[]>([])
+  const [Selectedbooking, setSelectedbooking] = useState<booking[]>([])
 
   const handleService = async () => {
     try {
@@ -82,11 +81,11 @@ const Booking: React.FC = () => {
     handleService();
   }, []);
 
-  
+
   useEffect(() => {
     const term = searchValue.search.trim().toLowerCase();
     if (term === "") {
-      
+
       setrowSlot(allSlots);
     } else {
       const filtered = allSlots.filter((s) =>
@@ -99,7 +98,7 @@ const Booking: React.FC = () => {
   const handleonchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setsearchValue((prev) => ({ ...prev, [name]: value }));
-    
+
   };
 
   const handleSelectserv = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -112,16 +111,34 @@ const Booking: React.FC = () => {
       });
     } else {
       setselectSv(null);
-      setAllSlots([]); 
+      setAllSlots([]);
     }
   };
-  const handleselected = (e:React.FormEvent<HTMLButtonElement>)=>{
-    
+  const handleselected = (slotItem:rowSlotty) => {
+    if (!selectedSv){
+      toast.error("Please choose or select service first")
+      return
+    }
+    const booked: booking ={
+      doctor_id: slotItem.doctor_id,
+      doctorname:slotItem.doctorname,
+      startTime:slotItem.start_time,
+      endTime:slotItem.end_time,
+      date:slotItem.date,
+      dayName:slotItem.day_name,
+      serviceId:selectedSv.servicename
+    }
+    setSelectedbooking(() => ([booked]))
+   console.log(Selectedbooking)
   }
 
-  const handlebookingRequest = async()=>{
-   
-    
+  const handlebookingRequest = async () => {
+   if(!setSelectedbooking){
+    toast.error("Please choose service you want to book")
+    return
+   }
+   const res =  await axios.post(apiURL+"api/service")
+
   }
   const handlegetslot = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -137,7 +154,7 @@ const Booking: React.FC = () => {
         toast.success("Available slots loaded");
         const result: rowSlotty[] = respond.data.available;
         setAllSlots(result);
-        
+
       } else if (respond.status === 400) {
         toast.error(respond.data.message);
       } else {
@@ -157,8 +174,6 @@ const Booking: React.FC = () => {
         <div className="bk-title">
           <p className="title-content">Welcome to Our Booking</p>
         </div>
-
-      
         <div className="ServiceListContainer">
           <form onSubmit={handlegetslot}>
             <select
@@ -180,8 +195,6 @@ const Booking: React.FC = () => {
             </button>
           </form>
         </div>
-
-        
         <div className="filter-listbk">
           <div className="search-list">
             <div
@@ -195,12 +208,10 @@ const Booking: React.FC = () => {
                 onChange={handleonchange}
                 value={searchValue.search}
               />
-              <IoSearchCircleSharp size={30} color="white" />
+              <IoSearchCircleSharp size={30} color="white"  />
             </div>
           </div>
         </div>
-
-      
         <div className="bookingsheetcointainer">
           {rowSlot.length > 0 ? (
             rowSlot.map((data, idx) => (
@@ -217,7 +228,7 @@ const Booking: React.FC = () => {
                   <p className="datebooking">Date: {data.date}</p>
                 </div>
                 <div className="bookbtn-container">
-                  <button className="bkbtn">Select</button>
+                  <button className="bkbtn" onClick={()=>handleselected(data)}>Select</button>
                 </div>
               </div>
             ))

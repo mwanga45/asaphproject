@@ -22,16 +22,21 @@ const Login: React.FC = () => {
       const res = await axios.post(apiURL+'api/service/login',form,{validateStatus:()=> true})
       switch(res.status){
         case 200:
-          // alert(res.data.message||"SuccessFully Login")
           toast.success(res.data.message)
+          const  token =  res.data.token
+          console.log(token)
+          localStorage.setItem("userToken", token)
           window.location.href ='/home'
+          break
         case 400:
           alert(res.data.message || 'Unexpect Error or Network Error')
+          break
         case 500:
           alert(res.data.message|| 'Something went wrong or Network Error') 
         break
         default:
           alert('Unexpected Status'+ res.status) 
+          break
       }
     }catch(err){
       console.error("Something went wrong ", err)

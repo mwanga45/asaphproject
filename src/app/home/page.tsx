@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../componets/navigation";
 import Infocard from "../componets/infocard";
 import { FaPhone } from "react-icons/fa6";
@@ -15,9 +15,12 @@ function Home() {
 const slides = [
   img1,img2,img3
 ];
-
+useEffect(()=>{
+  const token = localStorage.getItem('userToken')
+  console.log("here is token ",token)
+  
+}, [])
   return (
-
     <div className="hm-container">
       <Navbar />
       <div className="container-invitation">
