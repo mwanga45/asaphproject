@@ -245,8 +245,8 @@ const Booking: React.FC = () => {
           )}
         </div>
       </div>
-        <div>
-          <Bookingcofirmation/>
+        <div className="submit-requestbk">
+          <Bookingcofirmation dkname="" stT="" endT="" date="" dayWeek="" servname=""/>
         </div>
     </div>
   );

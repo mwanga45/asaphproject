@@ -8,12 +8,19 @@
 
 .innercf-container{
     width: 400px;
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     row-gap: 12px;
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border-radius: 15px;
     background-color: aliceblue;
-    
+}
+.innercf-container p{
+    color: rgb(7, 204, 7);
+    font-size: 18px;
+    font-weight: 700;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
