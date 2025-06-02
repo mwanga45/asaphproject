@@ -18,7 +18,6 @@ const slides = [
 useEffect(()=>{
   const token = localStorage.getItem('userToken')
   console.log("here is token ",token)
-  
 }, [])
   return (
     <div className="hm-container">
