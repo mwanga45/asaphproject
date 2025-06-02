@@ -151,6 +151,12 @@ const Booking: React.FC = () => {
           Authorization:`Bearer ${token}`
         }
       })
+      if(res.status === 200){
+       toast.success("successfuly make booking")
+       return
+      }
+      toast.error("Something went wrong")
+      console.error(res.data.message)
     }catch(err){
       console.error("Something went wrong", err)
     }
