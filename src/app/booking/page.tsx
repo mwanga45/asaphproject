@@ -153,12 +153,18 @@ const Booking: React.FC = () => {
       })
       if(res.status === 200){
        toast.success("successfuly make booking")
+       setisopen(!isopen)
        return
       }
       toast.error("Something went wrong")
       console.error(res.data.message)
+      setisopen(!isopen)
+      return
     }catch(err){
       console.error("Something went wrong", err)
+      toast.error('Internal server error')
+      setisopen(!isopen)
+      return
     }
 
 
@@ -267,7 +273,7 @@ const Booking: React.FC = () => {
       {isopen ? true &&(
 
         <div className="submit-requestbk">
-          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename}/>
+          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename} onclick={()=> handlebookingRequest} />
         </div>
       ) : false
       }
