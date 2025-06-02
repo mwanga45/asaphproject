@@ -1,11 +1,13 @@
 "use client";
 import React, { FormEvent, useEffect, useState } from "react";
 import Navbar from "../componets/navigation";
+import Bookingcofirmation from "../componets/bookingConfirmation"
 import { apiURL } from "../utils/Urlport";
 import { ToastContainer, toast } from "react-toastify";
 import "./booking.css";
 import axios from "axios";
 import { IoSearchCircleSharp } from "react-icons/io5";
+
 
 type service = {
   id: number;
@@ -42,11 +44,12 @@ const Booking: React.FC = () => {
   const [selectedSv, setselectSv] = useState<selectSv | null>(null);
   const [allSlots, setAllSlots] = useState<rowSlotty[]>([]);
   const [rowSlot, setrowSlot] = useState<rowSlotty[]>([]);
+  const [isopen , setisopen] = useState<boolean>(false)
   const [searchValue, setsearchValue] = useState<{ search: string }>({
     search: "",
   });
   const [Selectedbooking, setSelectedbooking] = useState<booking[]>([])
-  const token =  localStorage.getItem("userToken")
+  const token = localStorage.getItem("userToken")
   const handleService = async () => {
     try {
       const res = await axios.get(
@@ -114,30 +117,31 @@ const Booking: React.FC = () => {
       setAllSlots([]);
     }
   };
-  const handleselected = (slotItem:rowSlotty) => {
-    if (!selectedSv){
+  const handleselected = (slotItem: rowSlotty) => {
+    if (!selectedSv) {
       toast.error("Please choose or select service first")
       return
     }
-    const booked: booking ={
+    const booked: booking = {
       doctor_id: slotItem.doctor_id,
-      doctorname:slotItem.doctorname,
-      startTime:slotItem.start_time,
-      endTime:slotItem.end_time,
-      date:slotItem.date,
-      dayName:slotItem.day_name,
-      serviceId:selectedSv.servicename
+      doctorname: slotItem.doctorname,
+      startTime: slotItem.start_time,
+      endTime: slotItem.end_time,
+      date: slotItem.date,
+      dayName: slotItem.day_name,
+      serviceId: selectedSv.servicename,
     }
     setSelectedbooking(() => ([booked]))
-   console.log(Selectedbooking)
+    console.log(Selectedbooking)
   }
 
   const handlebookingRequest = async () => {
-   if(!setSelectedbooking){
-    toast.error("Please choose service you want to book")
-    return
-   }
-   const res =  await axios.post(apiURL+"api/service")
+    if (!setSelectedbooking) {
+      toast.error("Please choose service you want to book")
+      return
+    }
+    const res = await axios.post(apiURL + "api/service/booking/makebooking")
+
 
   }
   const handlegetslot = async (e: FormEvent<HTMLFormElement>) => {
@@ -208,7 +212,7 @@ const Booking: React.FC = () => {
                 onChange={handleonchange}
                 value={searchValue.search}
               />
-              <IoSearchCircleSharp size={30} color="white"  />
+              <IoSearchCircleSharp size={30} color="white" />
             </div>
           </div>
         </div>
@@ -228,7 +232,7 @@ const Booking: React.FC = () => {
                   <p className="datebooking">Date: {data.date}</p>
                 </div>
                 <div className="bookbtn-container">
-                  <button className="bkbtn" onClick={()=>handleselected(data)}>Select</button>
+                  <button className="bkbtn" onClick={() => handleselected(data)}>Select</button>
                 </div>
               </div>
             ))
@@ -241,6 +245,9 @@ const Booking: React.FC = () => {
           )}
         </div>
       </div>
+        <div>
+          <Bookingcofirmation/>
+        </div>
     </div>
   );
 };
