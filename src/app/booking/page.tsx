@@ -5,7 +5,7 @@ import { apiURL } from "../utils/Urlport";
 import { ToastContainer, toast } from "react-toastify";
 import "./booking.css";
 import axios from "axios";
-import Btn from '../componets/btn'
+import { IoSearchCircleSharp } from "react-icons/io5";
 
 type service = {
   id: number;
@@ -30,6 +30,7 @@ const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
   const [selectedSv, setselectSv] = useState<selectSv | null>(null)
   const [rowSlot, setrowSlot] = useState<rowSlotty[]>([])
+  const [searchValue, setsearchValue] = useState({ search:""})
   const handleService = async () => {
     try {
       const res = await axios.get(
@@ -59,6 +60,11 @@ const Booking: React.FC = () => {
       return alert("Internal Server Error");
     }
   };
+  const handleonchange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {name, value } = e.target
+    setsearchValue((prev => ({...prev, [name]:value})))
+  
+  }
   const handleSelectserv = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = Number(e.target.value)
     const svc = services.find((s) => s.id === id)
@@ -99,7 +105,6 @@ const Booking: React.FC = () => {
   useEffect(() => {
     handleService();
   }, []);
-
   return (
     <div className="mainbk-container">
       <Navbar />
@@ -121,12 +126,16 @@ const Booking: React.FC = () => {
             <button className="bk-btn">Get Slot!</button>
           </form>
         </div>
-        <div className="resultsheet">
-         {/* <Btn/> */}
+        <div className="filter-listbk">
+          <div className="search-list">
+            <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+              <input type="text" id='searchId' name="search"  placeholder="Search for days?" onChange={handleonchange}/><IoSearchCircleSharp  size={30}color="white"/>
+            </div>
+          </div>
         </div>
         <div className="bookingsheetcointainer">
           {
-            rowSlot.map((data:any) => {
+            rowSlot.map((data: any) => {
               return (
                 <div className="listSlot-container" key={data.doctor_id}>
                   <div className="imagedkt"></div>
@@ -148,8 +157,6 @@ const Booking: React.FC = () => {
               )
             })
           }
-
-
         </div>
       </div>
     </div>
