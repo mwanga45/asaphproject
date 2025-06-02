@@ -132,6 +132,7 @@ const Booking: React.FC = () => {
       serviceId: selectedSv.servicename,
     }
     setSelectedbooking(() => ([booked]))
+    setisopen(true)
     console.log(Selectedbooking)
   }
 
