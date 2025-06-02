@@ -137,11 +137,23 @@ const Booking: React.FC = () => {
   }
 
   const handlebookingRequest = async () => {
-    if (!setSelectedbooking) {
+    if (!setSelectedbooking.length) {
       toast.error("Please choose service you want to book")
       return
     }
-    const res = await axios.post(apiURL + "api/service/booking/makebooking")
+    if(!token){
+      toast.error('please login first')
+      return
+    }
+    try{
+      const res = await axios.post(apiURL + "api/service/booking/makebooking",{Selectedbooking}, {
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+    }catch(err){
+      console.error("Something went wrong", err)
+    }
 
 
   }
