@@ -44,7 +44,7 @@ const Booking: React.FC = () => {
   const [selectedSv, setselectSv] = useState<selectSv | null>(null);
   const [allSlots, setAllSlots] = useState<rowSlotty[]>([]);
   const [rowSlot, setrowSlot] = useState<rowSlotty[]>([]);
-  const [isopen , setisopen] = useState<boolean>(false)
+  const [isopen, setisopen] = useState<boolean>(false)
   const [searchValue, setsearchValue] = useState<{ search: string }>({
     search: "",
   });
@@ -141,33 +141,31 @@ const Booking: React.FC = () => {
       toast.error("Please choose service you want to book")
       return
     }
-    if(!token){
+    if (!token) {
       toast.error('please login first')
       return
     }
-    try{
-      const res = await axios.post(apiURL + "api/service/booking/makebooking",{Selectedbooking}, {
-        headers:{
-          Authorization:`Bearer ${token}`
+    try {
+      const res = await axios.post(apiURL + "api/service/booking/makebooking", { Selectedbooking }, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       })
-      if(res.status === 200){
-       toast.success("successfuly make booking")
-       setisopen(!isopen)
-       return
+      if (res.status === 200) {
+        toast.success("successfuly make booking")
+        setisopen(!isopen)
+        return
       }
       toast.error("Something went wrong")
       console.error(res.data.message)
       setisopen(!isopen)
       return
-    }catch(err){
+    } catch (err) {
       console.error("Something went wrong", err)
       toast.error('Internal server error')
       setisopen(!isopen)
       return
     }
-
-
   }
   const handlegetslot = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -270,10 +268,10 @@ const Booking: React.FC = () => {
           )}
         </div>
       </div>
-      {isopen ? true &&(
+      {isopen ? true && (
 
         <div className="submit-requestbk">
-          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename} onclick={()=> handlebookingRequest} />
+          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename} onclick={() => handlebookingRequest} />
         </div>
       ) : false
       }
