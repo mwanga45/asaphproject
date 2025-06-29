@@ -1,0 +1,93 @@
+
+.usrmain-container {
+  display: flex;
+  padding: 12px 12px;
+  background-color: rgba(77, 75, 75, 0.1);
+  border-radius: 20px;
+}
+
+.usrdetails {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  row-gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rolename {
+  border-left: 4px solid rgb(2, 245, 229);
+  border-bottom: 1px solid rgb(2, 245, 229);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.usrImgcontainer {
+  width: 100px;
+  height: 100px;
+  background-color: #000;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  display: flex;
+  overflow: hidden;
+}
+
+.usrnamecontainer,
+.usrphonecontainer,
+.usremailcontainer {
+  width: 140px;
+}
+
+.usremailcontainer {
+  width: 120px;
+}
+
+
+
+
+@media (max-width: 992px) {
+  .usrmain-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .usrImgcontainer {
+    margin-right: 0;
+  }
+
+  .usrnamecontainer,
+  .usrphonecontainer,
+  .usremailcontainer {
+    width: 100%;
+    text-align: center;
+  }
+
+  .rolename {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .usrmain-container {
+    padding: 0 8px;
+  }
+
+  .usrImgcontainer {
+    width: 80px;
+    height: 80px;
+  }
+
+  .rolename {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .usrnamecontainer p {
+    font-size: 16px;
+  }
+}
