@@ -4,7 +4,7 @@ const {isAuthenticated} = require("../middleware/auth")
 const {body, validationResult} = require('express-validator')
 const router = express.Router()
 
-router.get("/",async(req,res)=>{
+router.get("/", isAuthenticated, async(req,res)=>{
     try{
      const query1 =  "SELECT username,phone, email, address FROM  Users WHERE id = $1"
      const userId = req.user.id
@@ -65,9 +65,28 @@ router.post("/assignService",
             return res.status(500).json("Internal Server Error")
         }
 })
-// router.delete("/deleteservice", async(req,res)=>{
 
-// })
+router.get("/mybookings", isAuthenticated, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const query = `
+            SELECT b.*, s.servicename, d.doctorname
+            FROM bookings b
+            LEFT JOIN service_tb s ON b.service_id = s.id
+            LEFT JOIN doctors d ON b.doctor_id = d.id
+            WHERE b.user_id = $1
+            ORDER BY b.booking_date DESC, b.start_time DESC
+        `;
+        const { rows, rowCount } = await pool.query(query, [userId]);
+        if (rowCount === 0) {
+            return res.status(404).json({ message: "No bookings found for this user." });
+        }
+        return res.status(200).json({ bookings: rows });
+    } catch (err) {
+        console.error("Error fetching user bookings:", err);
+        return res.status(500).json({ message: "Internal Server Error or Network Error" });
+    }
+});
 
 
 module.exports= router

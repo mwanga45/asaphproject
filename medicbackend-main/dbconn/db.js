@@ -1,13 +1,35 @@
 require("dotenv").config();
 const { Pool } = require("pg");
 
-const pool = new Pool({
+// Debug environment variables
+console.log("=== Database Environment Variables Debug ===");
+console.log("DB_USER:", process.env.DB_USER, "Type:", typeof process.env.DB_USER);
+console.log("DB_PASSWORD:", process.env.DB_PASSWORD, "Type:", typeof process.env.DB_PASSWORD);
+console.log("DB_HOST:", process.env.DB_HOST, "Type:", typeof process.env.DB_HOST);
+console.log("DB_PORT:", process.env.DB_PORT, "Type:", typeof process.env.DB_PORT);
+console.log("DB_NAME:", process.env.DB_NAME, "Type:", typeof process.env.DB_NAME);
+console.log("===========================================");
+
+// Ensure all database configuration values are properly set
+const dbConfig = {
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT) || 5432,
+  password: String(process.env.DB_PASSWORD || ""), // Ensure password is always a string
   host: process.env.DB_HOST,
-});
+};
+
+// Validate required environment variables
+if (!dbConfig.user || !dbConfig.password || !dbConfig.host || !dbConfig.database) {
+  console.error("Missing required database environment variables:");
+  console.error("DB_USER:", !!dbConfig.user);
+  console.error("DB_PASSWORD:", !!dbConfig.password);
+  console.error("DB_HOST:", !!dbConfig.host);
+  console.error("DB_NAME:", !!dbConfig.database);
+  throw new Error("Missing required database environment variables");
+}
+
+const pool = new Pool(dbConfig);
 const databaseName = process.env.DB_NAME;
 
 async function createDatabaseIfNotExist() {
@@ -15,9 +37,10 @@ async function createDatabaseIfNotExist() {
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: "postgres",
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT || 5432,
+    password: String(process.env.DB_PASSWORD || ""), // Ensure password is always a string
+    port: parseInt(process.env.DB_PORT) || 5432,
   });
+  
   try {
     const query = `SELECT 1 FROM pg_database WHERE datname = $1`;
     const result = await defaultPool.query(query, [databaseName]);
@@ -117,40 +140,39 @@ async function initializeConnection() {
     await client.query(serviceTable);
     console.log("Service table initialized");
 
-    // Doctor services table (many-to-many relationship)
+    
     const doctorServicesTable = `
       CREATE TABLE IF NOT EXISTS doctor_services (
         id SERIAL PRIMARY KEY,
         doctor_id INTEGER REFERENCES doctors(id),
         service_id INTEGER REFERENCES service_tb(id),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(doctor_id, service_id)
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
     await client.query(doctorServicesTable);
     console.log("Doctor services table initialized");
 
-    // Bookings table
+
     const bookingTable = `
       CREATE TABLE IF NOT EXISTS bookings (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id),
         doctor_id INTEGER REFERENCES doctors(id),
         service_id INTEGER REFERENCES service_tb(id),
-        day_of_week VARCHAR(200) NOT NULL
+        day_of_week INTEGER NOT NULL,
         booking_date DATE NOT NULL,
         start_time TIME NOT NULL,
         end_time TIME NOT NULL,
         status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled', 'completed')),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(doctor_id, booking_date, start_time)
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        
       )
-    `;
-    const updatebooking = `ALTER TABLE bookings
-  // ADD COLUMN day_of_week INTEGER;`
-  //   await client.query(bookingTable);
-  //   await client.query(updatebooking)
+    `; 
+    await client.query(bookingTable);
+    console.log("bookings table initialized");
+
+
     console.log("Bookings table initialized");
     const AdmTb = `CREATE TABLE IF NOT EXISTS adm_tb(
     id SERIAL PRIMARY KEY,

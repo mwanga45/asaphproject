@@ -4,6 +4,7 @@ const { isAuthenticated } = require("../middleware/auth");
 const { body, validationResult } = require("express-validator");
 const moment = require("moment-timezone");
 const { HandleBookingsms } = require("../SMS/sms_respond");
+const axios = require('axios');
 const router = express.Router();
 
 function generateTimeSlots(startTime, endTime, durationMinutes) {
@@ -63,7 +64,7 @@ router.post(
     try {
       await client.query("BEGIN");
 
-      // Fetch working hours
+     
       const { rows: workingRows } = await client.query(
         `SELECT w.doctor_id, d.doctorname, w.day_of_week, w.start_time, w.end_time
          FROM doctor_working_hours w
@@ -124,12 +125,14 @@ router.post(
             duration_minutes
           );
 
-          // identify booked for this doctor/date
+        
           const bookedForDate = bookedRows
             .filter((b) => b.doctor_id == docId && b.booking_date === dateStr)
             .map((b) => `${b.start_time}-${b.end_time}`);
 
-          // separate available and booked
+      
+          const now = moment();
+
           slots.forEach((s) => {
             const key = `${s.start_time}-${s.end_time}`;
             const entry = {
@@ -140,8 +143,19 @@ router.post(
               start_time: s.start_time,
               end_time: s.end_time,
             };
-            if (bookedForDate.includes(key)) booked.push(entry);
-            else available.push(entry);
+        
+            if (bookedForDate.includes(key)) {
+              booked.push(entry);
+              return;
+            }
+          
+            if (
+              dateStr === today.format("YYYY-MM-DD") &&
+              moment(s.start_time, "HH:mm").isBefore(now)
+            ) {
+              return;
+            }
+            available.push(entry);
           });
         }
       }
@@ -184,9 +198,8 @@ router.post(
     .isISO8601()
     .withMessage("date must be a valid ISO date"),
   body("Selectedbooking[0].dayname")
-    .isString()
-    .notEmpty()
-    .withMessage("dayname is required"),
+    .isInt({ min: 0, max: 6 })
+    .withMessage("dayname (day_of_week) must be an integer between 0 (Sunday) and 6 (Saturday)"),
   body("Selectedbooking[0].serviceId")
     .isString()
     .notEmpty()
@@ -202,10 +215,8 @@ router.post(
     try {
       await client.query("BEGIN");
 
-      // 2) Pull userId from the decoded token (set by isAuthenticated)
       const userId = req.user.id;
-
-      // 3) Extract Selectedbooking from body
+    
       const { Selectedbooking } = req.body;
       const firstItem = Selectedbooking[0];
       const {
@@ -254,15 +265,13 @@ router.post(
         return res.status(404).json({ message: "User not found." });
       }
 
-      const Text = `Hi ${userRows.username}, your booking is confirmed!
-                    📅 Date: {{Date}}
-                    ⏰ Time: ${startTime} – ${endTime}
-                    📍 Service: ${servname.servicename}
-                    Thank you for choosing us and call us at 0748933859 if your need more information.
-`;
-     HandleBookingsms(userRows.phone,Text)
+      const Text = `Hi ${userRows[0].username}, your booking is confirmed!\nDate: {{Date}}\nTime: ${startTime} - ${endTime}\nService: ${servname.servicename}\nThank you for choosing us. Call us at 0748933859 if you need more information.`;
+      console.log(userRows[0].phone)
+      console.log('Sending SMS to', userRows[0].phone);
+      await HandleBookingsms(userRows[0].phone, Text);
+      console.log('SMS function executed');
       const insertBookingQuery = `
-        INSERT INTO booking
+        INSERT INTO bookings
           (user_id, doctor_id, service_id, booking_date, start_time, end_time, status, day_of_week)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING id
@@ -281,6 +290,17 @@ router.post(
         insertBookingQuery,
         insertValues
       );
+
+      // // Send SMS to user after booking is committed
+      // try {
+      //   await axios.post(
+      //     process.env.SMS_API_URL || 'http://localhost:3001/api/sms',
+      //     { phone: userRows[0].phone, message: Text }
+      //   );
+      // } catch (smsErr) {
+      //   console.error('Failed to send SMS:', smsErr.response?.data || smsErr.message);
+      //   // Do not fail booking if SMS fails
+      // }
 
       await client.query("COMMIT");
       return res.status(200).json({

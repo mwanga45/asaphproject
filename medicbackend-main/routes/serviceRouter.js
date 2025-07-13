@@ -6,6 +6,8 @@ const SmS = require("../SMS/sms_handler")
 const doctorservice = require('../services/doctorsServices')
 const admiLogin = require('../authentication/adminLog')
 const booking = require('../services/bookService')
+const analysisRouter = require('../analysis/analysis')
+// const chat = require("../chat/chat")
 const router = express.Router();
 
 router.use("/login", loginRouter);
@@ -15,5 +17,7 @@ router.use("/sms",SmS)
 router.use("/dktreg",doctorservice)
 router.use('/adm',admiLogin)
 router.use('/booking', booking)
+router.use('/analysis', analysisRouter)
+// router.use(chat)
 
-module.exports = router;
+module.exports = router; 
