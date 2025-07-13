@@ -40,6 +40,7 @@ export default function Navbar() {
     { name: "Chat", href: '/chatpage', icon: <MdSms className="icon" /> },
     { name: "Record", href: "/profile", icon: <RiChatHistoryFill className="icon" /> },
     { name: "Help", href: "/help", icon: <TbHelpSquareFilled className="icon" /> },
+    { name: "Videochat", href: "/videochart", icon: <TbHelpSquareFilled className="icon" /> },
     { name: "SignOut", href: "/authentic/login", icon: < FaSignOutAlt className="icon" /> },
   ];
 

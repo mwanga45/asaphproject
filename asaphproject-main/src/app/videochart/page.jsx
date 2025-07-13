@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import "./videochart.css";
 
-const SOCKET_SERVER_URL = 'http://192.168.159.251:8200'; 
+const SOCKET_SERVER_URL = 'http://localhost:8200'; 
+
 export default function VideoChart() {
   const [me, setMe] = useState('');
   const [stream, setStream] = useState();
@@ -15,29 +16,37 @@ export default function VideoChart() {
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
 
-  const myVideo = useRef();
-  const userVideo = useRef();
+  const myVideo = useRef(null);
+  const userVideo = useRef(null);
   const connectionRef = useRef();
   const socket = useRef();
 
   useEffect(() => {
-    // Safe to use browser APIs here
-    console.log(typeof navigator !== 'undefined');
+    // Initialize socket connection
     socket.current = io(SOCKET_SERVER_URL);
 
-    if (typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((currentStream) => {
+    // Get user media
+    const getMedia = async () => {
+      try {
+        const currentStream = await navigator.mediaDevices.getUserMedia({ 
+          video: true, 
+          audio: true 
+        });
         setStream(currentStream);
         if (myVideo.current) {
           myVideo.current.srcObject = currentStream;
         }
-      }).catch((err) => {
-        alert('Could not access camera/microphone: ' + err.message);
-      });
-    } else {
-      alert('Media devices are not available. Please use a supported browser and ensure you are running this on the client side.');
+      } catch (err) {
+        console.error('Failed to get media devices', err);
+        alert('Could not access camera/microphone: ' + (err && err.message ? err.message : err.toString()));
+      }
+    };
+
+    if (typeof window !== 'undefined' && navigator.mediaDevices) {
+      getMedia();
     }
 
+    // Socket event handlers
     socket.current.on('me', (id) => {
       setMe(id);
     });
@@ -54,76 +63,133 @@ export default function VideoChart() {
     });
 
     return () => {
-      socket.current.disconnect();
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
     };
   }, []);
 
   const callUser = (id) => {
-    const peer = new window.RTCPeerConnection({
+    if (!stream) return;
+
+    const peer = new RTCPeerConnection({
       iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
-      ],
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' }
+      ]
     });
     connectionRef.current = peer;
 
-    stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+    // Add local stream tracks
+    stream.getTracks().forEach(track => {
+      peer.addTrack(track, stream);
+    });
 
+    // ICE candidate handler
     peer.onicecandidate = (event) => {
       if (event.candidate) {
-        // You can send ICE candidates here if you want to support trickle ICE
+        socket.current?.emit('iceCandidate', {
+          candidate: event.candidate,
+          to: id
+        });
       }
     };
 
+    // Remote stream handler
     peer.ontrack = (event) => {
       if (userVideo.current) {
         userVideo.current.srcObject = event.streams[0];
       }
     };
 
-    peer.createOffer().then((offer) => {
-      peer.setLocalDescription(offer);
-      socket.current.emit('callUser', {
-        userToCall: id,
-        signalData: offer,
-        from: me,
-        name,
-      });
-    });
+    // Create offer
+    peer.createOffer()
+      .then(offer => {
+        return peer.setLocalDescription(offer);
+      })
+      .then(() => {
+        socket.current.emit('callUser', {
+          userToCall: id,
+          signalData: peer.localDescription,
+          from: me,
+          name,
+        });
+      })
+      .catch(err => console.error('Call error:', err));
 
+    // Handle call acceptance
     socket.current.on('callAccepted', (signal) => {
       setCallAccepted(true);
-      peer.setRemoteDescription(new RTCSessionDescription(signal));
+      peer.setRemoteDescription(new RTCSessionDescription(signal))
+        .catch(err => console.error('Set remote description error:', err));
+    });
+
+    // Handle ICE candidates from remote
+    socket.current.on('iceCandidate', (data) => {
+      if (peer.remoteDescription) {
+        peer.addIceCandidate(new RTCIceCandidate(data.candidate))
+          .catch(err => console.error('Add ICE candidate error:', err));
+      }
     });
   };
 
   const answerCall = () => {
+    if (!stream) return;
+
     setCallAccepted(true);
-    const peer = new window.RTCPeerConnection({
+    const peer = new RTCPeerConnection({
       iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
-      ],
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' }
+      ]
     });
     connectionRef.current = peer;
 
-    stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+    // Add local stream tracks
+    stream.getTracks().forEach(track => {
+      peer.addTrack(track, stream);
+    });
 
+    // ICE candidate handler
     peer.onicecandidate = (event) => {
       if (event.candidate) {
-        // You can send ICE candidates here if you want to support trickle ICE
+        socket.current?.emit('iceCandidate', {
+          candidate: event.candidate,
+          to: caller
+        });
       }
     };
 
+    // Remote stream handler
     peer.ontrack = (event) => {
       if (userVideo.current) {
         userVideo.current.srcObject = event.streams[0];
       }
     };
 
-    peer.setRemoteDescription(new RTCSessionDescription(callerSignal)).then(() => {
-      peer.createAnswer().then((answer) => {
-        peer.setLocalDescription(answer);
-        socket.current.emit('answerCall', { signal: answer, to: caller });
-      });
+    // Set remote description and create answer
+    peer.setRemoteDescription(new RTCSessionDescription(callerSignal))
+      .then(() => peer.createAnswer())
+      .then(answer => peer.setLocalDescription(answer))
+      .then(() => {
+        socket.current.emit('answerCall', { 
+          signal: peer.localDescription, 
+          to: caller 
+        });
+      })
+      .catch(err => console.error('Answer call error:', err));
+
+    // Handle ICE candidates from remote
+    socket.current.on('iceCandidate', (data) => {
+      if (peer.remoteDescription) {
+        peer.addIceCandidate(new RTCIceCandidate(data.candidate))
+          .catch(err => console.error('Add ICE candidate error:', err));
+      }
     });
   };
 
@@ -131,6 +197,7 @@ export default function VideoChart() {
     setCallEnded(true);
     setCallAccepted(false);
     setReceivingCall(false);
+    
     if (connectionRef.current) {
       connectionRef.current.close();
     }
@@ -141,16 +208,16 @@ export default function VideoChart() {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: '#f8f9fa' }}>
       <h2 className="heading">Video Chart (WebRTC Demo)</h2>
-      <div className="videos">
-        <div className="videoCard">
+      <div className="videos" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', gap: '2rem', flex: 1 }}>
+        <div className="videoCard" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '48vw' }}>
           <h3 className="videoTitle">Your Video</h3>
-          <video playsInline muted ref={myVideo} autoPlay className="video" />
+          <video playsInline muted ref={myVideo} autoPlay className="video" style={{ width: '100%', height: '60vh', background: '#000', borderRadius: '1rem', objectFit: 'cover' }} />
         </div>
-        <div className="videoCard">
+        <div className="videoCard" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '48vw' }}>
           <h3 className="videoTitle">Remote Video</h3>
-          <video playsInline ref={userVideo} autoPlay className="video" />
+          <video playsInline ref={userVideo} autoPlay className="video" style={{ width: '100%', height: '60vh', background: '#000', borderRadius: '1rem', objectFit: 'cover' }} />
         </div>
       </div>
       <div className="controls">
@@ -203,7 +270,3 @@ export default function VideoChart() {
     </div>
   );
 }
-
-console.log(typeof navigator !== 'undefined');
-console.log(navigator.mediaDevices);
-console.log(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
