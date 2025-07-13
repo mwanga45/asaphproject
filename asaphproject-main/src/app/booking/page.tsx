@@ -17,6 +17,7 @@ type service = {
 };
 
 type selectSv = {
+  id: number;
   servicename: string;
   duration_minutes: string;
 };
@@ -29,19 +30,41 @@ type rowSlotty = {
   date: string;
   day_name: string;
 };
+
+// Utility function to convert day name to integer (Sunday=0, ..., Saturday=6)
+function dayNameToInt(day: string): number {
+  switch (day.toLowerCase()) {
+    case 'sunday': return 0;
+    case 'monday': return 1;
+    case 'tuesday': return 2;
+    case 'wednesday': return 3;
+    case 'thursday': return 4;
+    case 'friday': return 5;
+    case 'saturday': return 6;
+    default: return -1; // invalid
+  }
+}
+
+// Helper to convert integer back to day name for display
+function intToDayName(day: number): string {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return days[day] || '';
+}
+
 type booking = {
   doctor_id: number;
   doctorname: string;
   startTime: string;
   endTime: string;
   date: string;
-  dayName: string
-  serviceId: string
+  dayname: number; // now integer
+  serviceId: string;
 }
 
 const Booking: React.FC = () => {
   const [services, setservices] = useState<service[]>([]);
   const [selectedSv, setselectSv] = useState<selectSv | null>(null);
+  const [selectedServiceId, setSelectedServiceId] = useState<string>("");
   const [allSlots, setAllSlots] = useState<rowSlotty[]>([]);
   const [rowSlot, setrowSlot] = useState<rowSlotty[]>([]);
   const [isopen, setisopen] = useState<boolean>(false)
@@ -49,6 +72,7 @@ const Booking: React.FC = () => {
     search: "",
   });
   const [Selectedbooking, setSelectedbooking] = useState<booking[]>([])
+  const [bookingLoading, setBookingLoading] = useState(false);
 
   const handleService = async () => {
     try {
@@ -105,22 +129,35 @@ const Booking: React.FC = () => {
   };
 
   const handleSelectserv = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = Number(e.target.value);
-    const svc = services.find((s) => s.id === id);
+    const id = e.target.value;
+    const numId = Number(id);
+    const svc = services.find((s) => s.id === numId);
     if (svc) {
       setselectSv({
+        id: svc.id,
         servicename: svc.servicename,
         duration_minutes: svc.duration_minutes,
       });
+      setSelectedServiceId(id);
     } else {
       setselectSv(null);
+      setSelectedServiceId("");
       setAllSlots([]);
     }
   };
   const handleselected = (slotItem: rowSlotty) => {
-    if (!selectedSv) {
-      toast.error("Please choose or select service first")
-      return
+    if (
+      !selectedSv ||
+      !selectedServiceId ||
+      !slotItem.doctor_id ||
+      !slotItem.doctorname ||
+      !slotItem.start_time ||
+      !slotItem.end_time ||
+      !slotItem.date ||
+      !slotItem.day_name
+    ) {
+      toast.error("Missing booking information. Please select a valid slot and service.");
+      return;
     }
     const booked: booking = {
       doctor_id: slotItem.doctor_id,
@@ -128,46 +165,67 @@ const Booking: React.FC = () => {
       startTime: slotItem.start_time,
       endTime: slotItem.end_time,
       date: slotItem.date,
-      dayName: slotItem.day_name,
-      serviceId: selectedSv.servicename,
-    }
-    setSelectedbooking(() => ([booked]))
-    setisopen(true)
-    console.log(Selectedbooking)
-  }
+      dayname: dayNameToInt(slotItem.day_name), // convert to integer
+      serviceId: selectedServiceId,
+    };
+    setSelectedbooking(() => [booked]);
+    setisopen(true);
+  };
 
   const handlebookingRequest = async () => {
     if (!Selectedbooking.length) {
-      toast.error("Please choose service you want to book")
-      return
+      toast.error("Please choose service you want to book");
+      return;
     }
-    const token = localStorage.getItem("userToken")
+    const b = Selectedbooking[0];
+    if (
+      !b.doctor_id ||
+      !b.doctorname ||
+      !b.startTime ||
+      !b.endTime ||
+      !b.date ||
+      !b.dayname ||
+      !b.serviceId ||
+      b.serviceId === "undefined"
+    ) {
+      toast.error("Booking data is incomplete. Please select a valid slot and service.");
+      return;
+    }
+    const token = localStorage.getItem("userToken");
     if (!token) {
-      toast.error('please login first')
-      return
+      toast.error('please login first');
+      return;
     }
+    setBookingLoading(true);
     try {
+      console.log("Booking payload:", { Selectedbooking });
       const res = await axios.post(apiURL + "api/service/booking/makebooking", { Selectedbooking }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
+      });
       if (res.status === 200) {
-        toast.success("successfuly make booking")
-        setisopen(!isopen)
-        return
+        toast.success("successfuly make booking");
+        setisopen(false);
+        setSelectedbooking([]);
+        setBookingLoading(false);
+        return;
       }
-      toast.error("Something went wrong")
-      console.error(res.data.message)
-      setisopen(!isopen)
-      return
+      toast.error("Something went wrong");
+      console.error(res.data.message);
+      setisopen(false);
+      setSelectedbooking([]);
+      setBookingLoading(false);
+      return;
     } catch (err) {
-      console.error("Something went wrong", err)
-      toast.error('Internal server error')
-      setisopen(!isopen)
-      return
+      console.error("Something went wrong", err);
+      toast.error('Internal server error');
+      setisopen(false);
+      setSelectedbooking([]);
+      setBookingLoading(false);
+      return;
     }
-  }
+  };
   const handlegetslot = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedSv) {
@@ -270,9 +328,17 @@ const Booking: React.FC = () => {
         </div>
       </div>
       {isopen ? true && (
-
         <div className="submit-requestbk">
-          <Bookingcofirmation dkname={Selectedbooking[0].doctorname} stT={Selectedbooking[0].startTime} endT={Selectedbooking[0].endTime} date={Selectedbooking[0].date} dayWeek={Selectedbooking[0].dayName} servname={selectedSv?.servicename} onclick={handlebookingRequest} />
+          <Bookingcofirmation 
+            dkname={Selectedbooking[0].doctorname} 
+            stT={Selectedbooking[0].startTime} 
+            endT={Selectedbooking[0].endTime} 
+            date={Selectedbooking[0].date} 
+            dayWeek={intToDayName(Selectedbooking[0].dayname)}
+            servname={selectedSv?.servicename} 
+            onclick={bookingLoading ? undefined : handlebookingRequest}
+          />
+          {bookingLoading && <div style={{textAlign:'center',marginTop:'1rem'}}>Processing booking...</div>}
         </div>
       ) : false
       }
