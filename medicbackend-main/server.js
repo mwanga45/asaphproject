@@ -16,7 +16,6 @@ const setupVideoChart = require("./videochart/videochart")
 
 const app = express();
 
-// Middleware
 app.use(cors({
     origin: '*',
     credentials: true
@@ -25,9 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Create HTTP server
-const server = http.createServer(app); // Create server instance
+const server = http.createServer(app); 
 
-// Initialize database
+
 const initializeApp = async () => {
     try {
         await initializeConnection();
