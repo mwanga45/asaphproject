@@ -101,7 +101,7 @@ function Profile() {
     <div className="profile-container">
       <Navbar />
       <div>
-        <Usercard username={username} />
+        <Usercard username={username} email={email} />
       </div>
       <div className="slot-desk">
         <div><Btn name="Bk History" onClick={handleShowBookings}/></div>

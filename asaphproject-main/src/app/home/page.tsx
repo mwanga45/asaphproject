@@ -26,33 +26,11 @@ useEffect(()=>{
   return (
     <div className="hm-container">
       <Navbar />
-      <div style={{
-        textAlign: 'center',
-        margin: '2.5rem auto 1.5rem auto',
-        background: 'rgba(0,0,0,0.5)',
-        borderRadius: '1.2rem',
-        padding: '1.5rem 1rem 1.2rem 1rem',
-        maxWidth: 600,
-        boxShadow: '0 2px 16px rgba(26,115,232,0.10)',
-        color: '#fff',
-      }}>
-        <h1 style={{
-          fontSize: '2.5rem',
-          fontWeight: 900,
-          letterSpacing: '1.5px',
-          marginBottom: 10,
-          color: '#fff',
-          textShadow: '0 2px 8px rgba(26,115,232,0.18)'
-        }}>
+      <div className="home-hero">
+        <h1 className="home-title">
           Medic Appointment Portal
         </h1>
-        <p style={{
-          fontSize: '1.18rem',
-          color: '#e3e8f0',
-          fontWeight: 500,
-          margin: 0,
-          letterSpacing: '0.2px'
-        }}>
+        <p className="home-desc">
           Book, manage, and track your medical appointments with ease. Secure, fast, and user-friendly for patients and doctors.
         </p>
       </div>
@@ -70,16 +48,12 @@ useEffect(()=>{
       <div className="footer">
         <div>
             <FaPhone />
-          <p style={{ fontSize: 20 }}>
-            Contact
-          </p>
-          <p style={{color:'blue'}}>0744010257</p>
+          <p className="footer-label">Contact</p>
+          <p style={{color:'#1976d2', fontWeight:600}}>0744010257</p>
         </div>
         <div>
               <FaInstagramSquare />
-          <p style={{ fontSize: 20 }}>
-            Instagram
-          </p>
+          <p className="footer-label">Instagram</p>
           <p>
             <a
               href="https://www.instagram.com/your_username"
@@ -92,9 +66,7 @@ useEffect(()=>{
         </div>
         <div>
             <IoLogoWhatsapp />
-          <p style={{ fontSize: 20 }}>
-            WhatsApp
-          </p>
+          <p className="footer-label">WhatsApp</p>
           <p>
             <a
               href="https://wa.me/15551234567?text=Hello%2C%20I%20have%20a%20question%20about%20your%20services"

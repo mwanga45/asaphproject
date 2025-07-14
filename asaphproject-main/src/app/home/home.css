@@ -1,13 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
 .hm-container{
-    background-color: rgb(233, 233, 233);
+    background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
     width: 100%;
-    height: fit-content;
-    
-    
+    min-height: 100vh;
+    font-family: 'Inter', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 .image-slide {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 32px;
+    margin-bottom: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,62 +19,133 @@
 .info-card{
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 122px;
-    margin-bottom: 12px;
-    column-gap: 12px;
+    align-items: stretch;
+    margin-top: 72px;
+    margin-bottom: 32px;
+    column-gap: 24px;
+    flex-wrap: wrap;
+}
+.info-card > * {
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px rgba(26,115,232,0.08);
+    padding: 2rem 1.5rem;
+    min-width: 260px;
+    max-width: 340px;
+    flex: 1 1 260px;
+    margin: 8px 0;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.info-card > *:hover {
+    box-shadow: 0 8px 32px rgba(26,115,232,0.16);
+    transform: translateY(-4px) scale(1.03);
 }
 .container-invitation{
-    margin-top: 12px;
+    margin-top: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5svh;
-    background-color: aliceblue;
-   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; 
+    min-height: 6svh;
+    background: linear-gradient(90deg, #e0f7fa 0%, #e3f2fd 100%);
+    box-shadow: 0 2px 12px rgba(60, 64, 67, 0.10);
+    border-radius: 1rem;
+    padding: 0.5rem 1.5rem;
 }
 .invitation{
-    font-size: 40px;
-    color: rgb(95, 180, 255);
+    font-size: 2.2rem;
+    color: #1976d2;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(26,115,232,0.10);
 }
 .footer{
     display: flex;
-    background-color: rgb(36, 35, 35);
+    background: linear-gradient(90deg, #232526 0%, #414345 100%);
     width: 100%;
-    height: 40svh;
+    min-height: 28svh;
     justify-content: space-evenly;
     column-gap: 2px;
     align-items: center;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    box-shadow: 0 -2px 16px rgba(26,115,232,0.08);
+    margin-top: 48px;
+    flex-wrap: wrap;
 }
 .footer p{
-    color: aliceblue;
+    color: #e3e8f0;
+    margin: 0.2rem 0;
 }
 .footer div svg{
-    color:aliceblue;
-    size: 34px;
+    color: #90caf9;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+.footer div svg:hover {
+    color: #1976d2;
 }
 .footer div{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: rgba(255,255,255,0.03);
+    border-radius: 1rem;
+    padding: 1.2rem 2rem;
+    margin: 0.5rem 0.5rem;
+    min-width: 180px;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.04);
+}
+.footer a {
+    color: #90caf9;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.footer a:hover {
+    color: #1976d2;
+    text-decoration: underline;
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width: 900px) {
     .info-card{
-        display: flex;
         flex-direction: column;
         row-gap: 32px;
         margin-bottom: 30px;
-
-    }
-    .invitation{
-        font-size: 20px;
+        align-items: center;
     }
     .footer{
-    display: flex;
-    background-color: rgb(36, 35, 35);
-    width: 100%;
-    height: 20svh;
+        flex-direction: column;
+        min-height: 20svh;
+        border-radius: 0;
+    }
+    .footer div{
+        min-width: 120px;
+        padding: 1rem 1.2rem;
+    }
+    .invitation{
+        font-size: 1.2rem;
+    }
 }
+
+@media screen and (max-width: 480px) {
+    .info-card{
+        flex-direction: column;
+        row-gap: 32px;
+        margin-bottom: 30px;
+        align-items: center;
+    }
+    .invitation{
+        font-size: 1rem;
+    }
+    .footer{
+        flex-direction: column;
+        min-height: 16svh;
+        border-radius: 0;
+    }
+    .footer div{
+        min-width: 90px;
+        padding: 0.7rem 0.7rem;
+    }
 }

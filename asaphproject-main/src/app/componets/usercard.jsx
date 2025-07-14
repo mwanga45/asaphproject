@@ -1,6 +1,6 @@
 import React from 'react'
 import "./usercard.css"
-export default function Usercard({ username }) {
+export default function Usercard({ username, email }) {
 
   return (
     <div className='usrmain-container'>
@@ -22,7 +22,7 @@ export default function Usercard({ username }) {
             </div>
             <div className='usremailcontainer'>
                 <p style={{color:"grey", fontWeight:"bolder"}}>Email</p>
-                <p style={{color:"grey", fontWeight:"800"}}>AsaphFranklin@gmail.com</p>
+                <p style={{color:"grey", fontWeight:"800"}}>{email ? email : "No email found"}</p>
             </div>
         </div>
       </div>
